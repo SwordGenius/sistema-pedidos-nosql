@@ -5,6 +5,8 @@ const clientRoutes = require('./routes/cliente.route');
 const pedidoRoutes = require('./routes/pedido.route');
 const resenaRoutes = require('./routes/resena.route');
 const authRoutes = require('./routes/auth.route');
+const cookieParser = require('cookie-parser');
+require('./configs/db.config');
 
 // Settings
 app.set('port', process.env.PORT || 3000);
@@ -17,7 +19,7 @@ app.use(cors(
     }
 ));
 app.use(express.json());
-
+app.use(cookieParser());
 // Routes
 app.use('/cliente', clientRoutes);
 app.use('/pedido', pedidoRoutes);
@@ -28,4 +30,4 @@ app.use('/auth', authRoutes);
 
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
-}
+});

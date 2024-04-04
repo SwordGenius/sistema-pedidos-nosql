@@ -9,7 +9,7 @@ const index = async (req, res) => {
         const offset = (page - 1) * limit;
         const {sort, order} = req.query;
 
-        const clientes = await clienteModel.find({deleted: false}).limit(limit).skip(offset).sort({[sort]: order});
+        const clientes = await clienteModel.find({deleted: false});
 
         let response = {
             message: "clientes obtenidos exitosamente",
@@ -17,9 +17,11 @@ const index = async (req, res) => {
         };
 
         if (page && limit) {
+            const clientes = await clienteModel.find({deleted: false}).limit(limit).skip(offset).sort({[sort]: order});
             const totalClientes = await clienteModel.countDocuments({deleted: false});
             response = {
                 ...response,
+                data: clientes,
                 total: totalClientes,
                 totalPages: Math.ceil(totalClientes / limit),
                 currentPage: page

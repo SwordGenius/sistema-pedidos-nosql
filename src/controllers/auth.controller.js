@@ -5,15 +5,16 @@ const {serialize} = require("cookie");
 
 const loginAuthCliente = async (req, res) => {
     try{
-        const {email, password} = req.body;
-        const cliente = await clienteModel.findOne({correo: email});
+        const {correo, contrasena} = req.body;
+        const cliente = await clienteModel.findOne({correo: correo});
+
         if (!cliente) {
             return res.status(200).json({
                 message: "email o contraseña incorrecta"
             });
         }
         let passwordCorrecta = false;
-        if (bcrypt.compareSync(password, cliente.contrasena))
+        if (bcrypt.compareSync(contrasena, cliente.contrasena))
             passwordCorrecta = true;
         if (!passwordCorrecta) {
             return res.status(200).json({
@@ -25,6 +26,7 @@ const loginAuthCliente = async (req, res) => {
                 _id: cliente._id
             }
         }
+
         const token = jwt.sign(payload, process.env.SECRET, {expiresIn: '1h'});
         const serialized = serialize('aToken', token, {
             sameSite: 'none',
