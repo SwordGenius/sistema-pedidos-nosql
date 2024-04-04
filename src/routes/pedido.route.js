@@ -5,7 +5,7 @@ const {verifyAuth} = require('../middlewares/auth.middleware');
 
 router.get('/', pedidoController.index);
 router.get('/:id', pedidoController.getById);
-router.post('/', pedidoController.create);
+router.post('/', verifyAuth, pedidoController.create);
 //router.patch('/:id', verifyAuth, pedidoController.updateById);
 router.delete('/:id', verifyAuth, pedidoController.deleteById);
 //router.put('/:id', verifyAuth, pedidoController.putById);

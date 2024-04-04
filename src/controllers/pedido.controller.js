@@ -62,20 +62,24 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        const {tipo_pedido, cantidad, fecha_pedido, ubicacion_entrega} = req.body
+        const {tipo_pedido, cantidad, ubicacion_entrega} = req.body
         const token = req.cookies.aToken;
-        const idCliente = verify(token, process.env.SECRET).usuario._id;
+        const idCliente = verify(token, process.env.SECRET).cliente._id;
         const cliente = await clienteModel.findById(idCliente);
         const pedido = new pedidoModel({
             tipo_pedido,
             cantidad,
-            fecha_pedido,
             ubicacion_entrega
         });
         await pedido.save();
         const newClient = new clienteModel(cliente)
         newClient.pedidos.push(pedido._id);
         await newClient.save();
+
+        return res.status(200).json({
+            message: "pedido creado exitosamente",
+            pedido
+        });
 
     }catch (error) {
         return res.status(500).json({

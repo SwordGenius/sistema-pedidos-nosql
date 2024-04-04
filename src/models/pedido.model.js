@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const pedidoSchema = new mongoose.Schema({
-    tipo_producto: {
+    tipo_pedido: {
         type: String,
         required: true
     },
@@ -11,7 +11,7 @@ const pedidoSchema = new mongoose.Schema({
     },
     fecha_pedido: {
         type: Date,
-        required: true
+        default: Date.now
     },
     ubicacion_entrega: {
         type: String,
